@@ -25,11 +25,11 @@ def addTitle(title_text, clip):
     return video
 
 
-clip = VideoFileClip(str(path.parent) + "/content/footage/Blazing_Fire.mp4").subclip(
-    20, 30
-)
+# clip = VideoFileClip(str(path.parent) + "/content/footage/Blazing_Fire.mp4").subclip(
+#     20, 30
+# )
 
-video = CompositeVideoClip([clip, addTitle("TITLE", clip)])
+# video = CompositeVideoClip([clip, addTitle("MAVS 108 - 102 - ATL", clip)])
 
-# Write the result to a file (many options available !)
-video.write_videofile(str(path.parent) + "/content/footage/new.mp4")
+# # Write the result to a file (many options available !)
+# video.write_videofile(str(path.parent) + "/content/footage/new.mp4")

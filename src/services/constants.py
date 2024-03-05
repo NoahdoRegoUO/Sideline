@@ -30,3 +30,4 @@ nba_teams = [
     "UTA",
     "WAS",
 ]
+highlight_keywords = ["dunk", "3PT"]
