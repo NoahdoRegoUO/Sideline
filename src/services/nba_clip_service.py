@@ -1,5 +1,14 @@
+import os
 import requests
 import json
+import urllib.request
+
+from . import editing_service
+from pathlib import Path
+
+
+# Global Variables
+path = Path(os.path.dirname(__file__))
 
 
 def clip_endpoint(game_IDs):
@@ -28,6 +37,52 @@ def clip_endpoint(game_IDs):
     response = requests.request("POST", url, headers=headers, data=payload)
 
     return response.json()
+
+
+def combine_game_highlights(highlights):
+    tmpCount = 1
+
+    urllib.request.urlretrieve(
+        highlights[0]["videoUrl"],
+        str(path.parent) + "/content/clips/combined_clips" + str(tmpCount) + ".mp4",
+    )
+
+    highlights.pop(0)
+
+    for clip in highlights:
+        clip_path = (
+            str(path.parent) + "/content/clips/highlight_" + str(tmpCount) + ".mp4"
+        )
+        urllib.request.urlretrieve(
+            clip["videoUrl"],
+            clip_path,
+        )
+        editing_service.combine_videos(
+            str(path.parent)
+            + "/content/clips/"
+            + "combined_clips"
+            + str(tmpCount)
+            + ".mp4",
+            clip_path,
+            str(path.parent)
+            + "/content/clips/combined_clips"
+            + str(tmpCount + 1)
+            + ".mp4",
+        )
+        os.remove(clip_path)
+        os.remove(
+            str(path.parent)
+            + "/content/clips/"
+            + "combined_clips"
+            + str(tmpCount)
+            + ".mp4"
+        )
+        tmpCount += 1
+
+    os.rename(
+        str(path.parent) + "/content/clips/combined_clips" + str(tmpCount) + ".mp4",
+        str(path.parent) + "/content/clips/all_highlights.mp4",
+    )
 
 
 # clip = VideoFileClip(os.path.dirname(__file__) + "/Blazing_Fire.mp4").subclip(20, 30)

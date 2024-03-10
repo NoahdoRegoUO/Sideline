@@ -1,3 +1,8 @@
+import os
+
+from pathlib import Path
+
+
 nba_teams = [
     "ATL",
     "BOS",
@@ -30,4 +35,7 @@ nba_teams = [
     "UTA",
     "WAS",
 ]
-highlight_keywords = ["dunk", "3PT"]
+
+highlight_keywords = ["dunk"]
+
+path = Path(os.path.dirname(__file__))
