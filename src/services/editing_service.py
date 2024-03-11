@@ -8,19 +8,29 @@ path = Path(os.path.dirname(__file__))
 
 
 def addSubtitle(title_text, clip):
-    # Generate a text clip. You can customize the font, color, etc.
-    txt_clip = TextClip(
-        title_text,
-        font="Avenir-Next-Condensed-Heavy",
-        fontsize=36,
-        color="white",
+    # Generate a text clip at top left
+    txt_clip = (
+        TextClip(
+            title_text,
+            font="Avenir-Next-Condensed-Heavy",
+            fontsize=36,
+            color="white",
+        )
+        .set_position(("left", "top"))
+        .set_duration(clip.duration)
     )
 
-    # Say that you want it to appear 10s at the center of the screen
-    txt_clip = txt_clip.set_position(("left", "top")).set_duration(clip.duration)
+    # Generate Image clip for text background at top left
+    img_clip = (
+        ImageClip(str(path.parent) + "/content/images/sideline_header.png")
+        .set_duration(clip.duration)
+        .set_position(("left", "top"))
+    )
+
+    img_clip = img_clip.resize(0.5)
 
     # Overlay the text clip on the first video clip
-    video = CompositeVideoClip([clip, txt_clip])
+    video = CompositeVideoClip([clip, img_clip, txt_clip])
 
     return video
 
