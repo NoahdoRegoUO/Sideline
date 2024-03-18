@@ -36,6 +36,9 @@ nba_teams = [
     "WAS",
 ]
 
-highlight_keywords = ["dunk"]
+highlight_keywords = ["dunk", "Dunk", "dunk,"]
+
+intro_path = "/content/clips/sideline_intro.mp4"
+outro_path = "/content/images/sideline_outro.png"
 
 path = Path(os.path.dirname(__file__))
