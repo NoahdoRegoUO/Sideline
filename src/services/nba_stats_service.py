@@ -4,7 +4,7 @@ from dateutil import parser
 from nba_api.live.nba.endpoints import scoreboard
 from nba_api.stats.endpoints import leaguegamefinder
 
-from . import constants
+import constants
 
 import pandas as pd
 

@@ -4,8 +4,8 @@ import json
 import urllib.request
 
 from services import editing_service, nba_stats_service, nba_clip_service
-from services.endpoints import *
-from services.constants import *
+from endpoints import *
+from constants import *
 from classes.game import Game
 from classes.highlight import Highlight
 from pathlib import Path

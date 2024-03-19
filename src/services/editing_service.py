@@ -2,7 +2,7 @@ import os
 
 from moviepy.editor import *
 from pathlib import Path
-from services.constants import *
+from constants import *
 
 # GLOBAL VARIABLES
 path = Path(os.path.dirname(__file__))
