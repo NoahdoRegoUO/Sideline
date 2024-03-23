@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import datetime, date, timedelta
 
 
-def getYesterdaysStandings():
+def getYesterdaysRace():
     # Get yesterday's date
     yesterday_date = date.today() - timedelta(days=1)
 
@@ -13,9 +13,6 @@ def getYesterdaysStandings():
     print(schedule.columns)
 
     # Find the round closest to the current date
-    session_date = schedule["Session5Date"][1].to_pydatetime().date()
-    print((session_date - date.today()).days)
-
     yesterdays_race = None
 
     for index, row in schedule.iterrows():
@@ -24,29 +21,18 @@ def getYesterdaysStandings():
                 int(
                     (
                         schedule["Session5Date"][index].to_pydatetime().date()
-                        - date.today()
+                        - yesterday_date
                     ).days
                 )
-                == 1
+                == -16
             ):
-                yesterdays_race = schedule["Session5Date"][index]
+                yesterdays_race = schedule.iloc[index]
+    return yesterdays_race
 
-    print(yesterdays_race)
 
-    print(closest_round)
-
-    # Get the round number
-    latest_round = closest_round["round"]
-
+def getYesterdaysResults(round_number):
     # Fetch the latest race data
-    session = fastf1.get_session(
-        season=2024, round=latest_round, include=["Drivers", "LapTimes"]
-    )
+    session = fastf1.get_session(year=2024, gp=round_number, identifier="Race")
+    session.load(telemetry=False, weather=False, messages=False)
 
-    # Extract the standings
-    standings = session.classification
-    print("Standings from the latest race:")
-    for position, driver in enumerate(standings, start=1):
-        print(
-            f"{position}. {driver['Driver']} - {driver['Time']} - {driver['Laps']} laps"
-        )
+    return session

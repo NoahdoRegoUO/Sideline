@@ -8,7 +8,7 @@ from constants import *
 path = Path(os.path.dirname(__file__))
 
 
-def addSubtitle(title_text, clip):
+def addNBAScoreline(title_text, clip):
     # Generate a text clip at top left
     txt_clip = (
         TextClip(
@@ -32,6 +32,69 @@ def addSubtitle(title_text, clip):
 
     # Overlay the text clip on the first video clip
     video = CompositeVideoClip([clip, img_clip, txt_clip])
+
+    return video
+
+
+def addF1DriverResult(position, name, time, diff):
+    # Generate Image clip for F1 background
+    background = (
+        ImageClip(str(path.parent) + "/content/images/f1-background.png")
+        .set_duration(8)
+        .set_position("center")
+        .set_fps(60)
+    )
+
+    # Add position in top left
+    position_txt = (
+        TextClip(
+            position,
+            font="Avenir-Next-Condensed-Heavy",
+            fontsize=100,
+            color="white",
+        )
+        .set_position((0.01, 0.01), relative=True)
+        .set_duration(background.duration)
+    )
+
+    # Add driver name
+    name_txt = (
+        TextClip(
+            name,
+            font="Avenir-Next-Condensed-Heavy",
+            fontsize=60,
+            color="white",
+        )
+        .set_position((0.01, 0.2), relative=True)
+        .set_duration(background.duration)
+    )
+
+    # Add time
+    time_txt = (
+        TextClip(
+            time,
+            font="Avenir-Next-Condensed-Heavy",
+            fontsize=60,
+            color="white",
+        )
+        .set_position((0.08, 0.4), relative=True)
+        .set_duration(background.duration)
+    )
+
+    # Add time
+    diff_txt = (
+        TextClip(
+            diff,
+            font="Avenir-Next-Condensed-Heavy",
+            fontsize=60,
+            color="white",
+        )
+        .set_position((0.08, 0.58), relative=True)
+        .set_duration(background.duration)
+    )
+
+    # Overlay the text clip on the first video clip
+    video = CompositeVideoClip([background, position_txt, name_txt, time_txt, diff_txt])
 
     return video
 
