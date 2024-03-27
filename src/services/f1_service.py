@@ -1,5 +1,7 @@
 import fastf1
 import pandas as pd
+import requests
+
 from datetime import datetime, date, timedelta
 
 
@@ -24,7 +26,7 @@ def getYesterdaysRace():
                         - yesterday_date
                     ).days
                 )
-                == -16
+                == 0
             ):
                 yesterdays_race = schedule.iloc[index]
     return yesterdays_race

@@ -1,8 +1,10 @@
 import os
+import urllib.request
 
 from moviepy.editor import *
 from pathlib import Path
 from constants import *
+from PIL import Image
 
 # GLOBAL VARIABLES
 path = Path(os.path.dirname(__file__))
@@ -36,7 +38,7 @@ def addNBAScoreline(title_text, clip):
     return video
 
 
-def addF1DriverResult(position, name, time, diff):
+def addF1DriverResult(position, name, time, diff, driver):
     # Generate Image clip for F1 background
     background = (
         ImageClip(str(path.parent) + "/content/images/f1-background.png")
@@ -48,7 +50,7 @@ def addF1DriverResult(position, name, time, diff):
     # Add position in top left
     position_txt = (
         TextClip(
-            position,
+            "1st",
             font="Avenir-Next-Condensed-Heavy",
             fontsize=100,
             color="white",
@@ -93,8 +95,21 @@ def addF1DriverResult(position, name, time, diff):
         .set_duration(background.duration)
     )
 
+    # Store driver image
+    urllib.request.urlretrieve(
+        driver, str(path.parent) + "/content/images/temp_f1_driver.png"
+    )
+
+    driver_img = (
+        ImageClip(str(path.parent) + "/content/images/temp_f1_driver.png")
+        .set_duration(background.duration)
+        .set_position((0.5, 0.5), relative=True)
+    )
+
     # Overlay the text clip on the first video clip
-    video = CompositeVideoClip([background, position_txt, name_txt, time_txt, diff_txt])
+    video = CompositeVideoClip(
+        [background, position_txt, name_txt, time_txt, diff_txt, driver_img]
+    )
 
     return video
 

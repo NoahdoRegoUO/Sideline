@@ -10,6 +10,7 @@ path = Path(os.path.dirname(__file__))
 ### F1 SERVICE TEST ###
 race_info = f1_service.getYesterdaysRace()
 race_results = None
+f1_clips = []
 
 if race_info is not None:
     round_number = race_info["RoundNumber"].item()
@@ -17,12 +18,41 @@ if race_info is not None:
 else:
     print("No F1 Race Yesterday.")
 
-### F1 RESULT TEST ###
-tmp_vid = editing_service.addF1DriverResult(
-    "1ST", "MAX VERSTAPPEN", "1:02:36", "+ 0:00"
-)
+if race_results:
+    for index in range(0, len(race_results.results.index)):
+        driver_info = race_results.results.iloc[index]
 
-tmp_vid.write_videofile(str(path) + "/content/clips/test_vid.mp4")
+        # Set Custom Diff
+        diff = ""
+        if not any(
+            substring in driver_info["Status"] for substring in ["Lap", "Finished"]
+        ):
+            diff = "DNF (" + driver_info["Status"] + ")"
+        else:
+            diff = driver_info["Status"]
+
+        # Add Result Clip
+        f1_clips.append(
+            editing_service.addF1DriverResult(
+                str(driver_info["Position"]),
+                driver_info["FullName"],
+                str(driver_info["Time"]),
+                diff,
+                driver_info["HeadshotUrl"],
+            )
+        )
+        print(driver_info)
+
+if len(f1_clips) > 0:
+    video = concatenate_videoclips(f1_clips, method="compose")
+    video.write_videofile(str(path) + "/content/clips/f1_results.mp4")
+
+### F1 RESULT TEST ###
+# tmp_vid = editing_service.addF1DriverResult(
+#     "1ST", "MAX VERSTAPPEN", "1:02:36", "+ 0:00"
+# )
+
+# tmp_vid.write_videofile(str(path) + "/content/clips/test_vid.mp4")
 
 ### INTRO - OUTRO TEST ###
 # tmp_vid = VideoFileClip(str(path) + "/content/clips/tmp.mp4")
