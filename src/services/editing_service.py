@@ -100,11 +100,22 @@ def addF1DriverResult(position, name, time, diff, driver):
         driver, str(path.parent) + "/content/images/temp_f1_driver.png"
     )
 
+    temp_img = Image.open(
+        str(path.parent) + "/content/images/temp_f1_driver.png"
+    ).convert("RGBA")
+
+    edited_img = Image.new("RGBA", temp_img.size)
+    edited_img.paste((225, 225, 225, 0), box=(0, 0) + temp_img.size)
+    edited_img.paste(temp_img, mask=temp_img)
+    edited_img.save(str(path.parent) + "/content/images/edited_f1_driver.png")
+
     driver_img = (
-        ImageClip(str(path.parent) + "/content/images/temp_f1_driver.png")
+        ImageClip(str(path.parent) + "/content/images/edited_f1_driver.png")
         .set_duration(background.duration)
-        .set_position((0.5, 0.5), relative=True)
+        .set_position((0.7, 0.3), relative=True)
     )
+
+    driver_img = driver_img.resize(5)
 
     # Overlay the text clip on the first video clip
     video = CompositeVideoClip(

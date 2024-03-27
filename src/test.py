@@ -1,9 +1,11 @@
 import os
 import numpy as np
+import pandas as pd
 
 from services import editing_service, nba_stats_service, nba_clip_service, f1_service
 from moviepy.editor import *
 from pathlib import Path
+from datetime import datetime, date, timedelta
 
 path = Path(os.path.dirname(__file__))
 
@@ -31,12 +33,26 @@ if race_results:
         else:
             diff = driver_info["Status"]
 
+        # Set Time
+        time = ""
+        if isinstance(driver_info["Time"], pd.Timedelta):
+            pyTime = driver_info["Time"].to_pytimedelta()
+            time = (
+                str(pyTime.seconds // 3600)
+                + ":"
+                + str(pyTime.seconds // 60 % 60)
+                + ":"
+                + str(pyTime.seconds % 60)
+            )
+        else:
+            time = ">1 Lap"
+
         # Add Result Clip
         f1_clips.append(
             editing_service.addF1DriverResult(
                 str(driver_info["Position"]),
                 driver_info["FullName"],
-                str(driver_info["Time"]),
+                time,
                 diff,
                 driver_info["HeadshotUrl"],
             )
