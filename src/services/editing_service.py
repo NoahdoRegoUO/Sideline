@@ -38,24 +38,30 @@ def addNBAScoreline(title_text, clip):
     return video
 
 
-def addF1DriverResult(position, name, time, diff, driver):
+def addF1DriverResult(position, name, team, time, diff, driver):
     # Generate Image clip for F1 background
     background = (
         ImageClip(str(path.parent) + "/content/images/f1-background.png")
-        .set_duration(8)
+        .set_duration(5)
         .set_position("center")
         .set_fps(60)
     )
 
-    # Add position in top left
+    # Lambda function for converting number to ordinal
+    ordinal = lambda n: "%d%s" % (
+        n,
+        "TSNRHTDD"[(n // 10 % 10 != 1) * (n % 10 < 4) * n % 10 :: 4],
+    )
+
+    # Add position in bottom right
     position_txt = (
         TextClip(
-            "1st",
+            ordinal(int(float(position))),
             font="Avenir-Next-Condensed-Heavy",
-            fontsize=100,
-            color="white",
+            fontsize=175,
+            color="red",
         )
-        .set_position((0.01, 0.01), relative=True)
+        .set_position((0.68, 0.5), relative=True)
         .set_duration(background.duration)
     )
 
@@ -67,7 +73,19 @@ def addF1DriverResult(position, name, time, diff, driver):
             fontsize=60,
             color="white",
         )
-        .set_position((0.01, 0.2), relative=True)
+        .set_position((0.1, 0.02), relative=True)
+        .set_duration(background.duration)
+    )
+
+    # Add team name
+    team_txt = (
+        TextClip(
+            team,
+            font="Avenir-Next-Condensed-Heavy",
+            fontsize=60,
+            color="white",
+        )
+        .set_position((0.01, 0.21), relative=True)
         .set_duration(background.duration)
     )
 
@@ -76,10 +94,10 @@ def addF1DriverResult(position, name, time, diff, driver):
         TextClip(
             time,
             font="Avenir-Next-Condensed-Heavy",
-            fontsize=60,
+            fontsize=50,
             color="white",
         )
-        .set_position((0.08, 0.4), relative=True)
+        .set_position((0.08, 0.41), relative=True)
         .set_duration(background.duration)
     )
 
@@ -88,10 +106,10 @@ def addF1DriverResult(position, name, time, diff, driver):
         TextClip(
             diff,
             font="Avenir-Next-Condensed-Heavy",
-            fontsize=60,
+            fontsize=50,
             color="white",
         )
-        .set_position((0.08, 0.58), relative=True)
+        .set_position((0.08, 0.6), relative=True)
         .set_duration(background.duration)
     )
 
@@ -112,14 +130,12 @@ def addF1DriverResult(position, name, time, diff, driver):
     driver_img = (
         ImageClip(str(path.parent) + "/content/images/edited_f1_driver.png")
         .set_duration(background.duration)
-        .set_position((0.7, 0.3), relative=True)
+        .set_position((0.01, 0.01), relative=True)
     )
-
-    driver_img = driver_img.resize(5)
 
     # Overlay the text clip on the first video clip
     video = CompositeVideoClip(
-        [background, position_txt, name_txt, time_txt, diff_txt, driver_img]
+        [background, position_txt, name_txt, team_txt, time_txt, diff_txt, driver_img]
     )
 
     return video

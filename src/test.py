@@ -36,14 +36,10 @@ if race_results:
         # Set Time
         time = ""
         if isinstance(driver_info["Time"], pd.Timedelta):
-            pyTime = driver_info["Time"].to_pytimedelta()
-            time = (
-                str(pyTime.seconds // 3600)
-                + ":"
-                + str(pyTime.seconds // 60 % 60)
-                + ":"
-                + str(pyTime.seconds % 60)
-            )
+            time = str(driver_info["Time"])[7:-3]
+            print(time[1])
+            if int(time[1]) == 0:
+                time = "+" + time
         else:
             time = ">1 Lap"
 
@@ -52,6 +48,7 @@ if race_results:
             editing_service.addF1DriverResult(
                 str(driver_info["Position"]),
                 driver_info["FullName"],
+                driver_info["TeamName"],
                 time,
                 diff,
                 driver_info["HeadshotUrl"],
