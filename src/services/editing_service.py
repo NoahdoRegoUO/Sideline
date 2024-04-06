@@ -42,7 +42,7 @@ def addF1DriverResult(position, name, team, time, diff, driver):
     # Generate Image clip for F1 background
     background = (
         ImageClip(str(path.parent) + "/content/images/f1-background.png")
-        .set_duration(5)
+        .set_duration(4)
         .set_position("center")
         .set_fps(60)
     )
@@ -61,7 +61,7 @@ def addF1DriverResult(position, name, team, time, diff, driver):
             fontsize=175,
             color="red",
         )
-        .set_position((0.68, 0.5), relative=True)
+        .set_position((0.68, 0.6), relative=True)
         .set_duration(background.duration)
     )
 
@@ -146,6 +146,15 @@ def combine_videos(video1_path, video2_path, final_path):
     clip2 = VideoFileClip(video2_path)
     combined_clips = concatenate_videoclips([clip1, clip2], method="compose")
     combined_clips.write_videofile(final_path)
+
+
+def add_background_music(video, audio_file):
+    music = AudioFileClip(str(path.parent) + "/content/audio/" + audio_file)
+    audio = afx.audio_loop(music, duration=video.duration)
+    audio = audio.fx(afx.volumex, 0.25)
+    new_audioclip = CompositeAudioClip([video.audio, audio])
+    video = video.set_audio(new_audioclip)
+    return video
 
 
 def add_intro(video):

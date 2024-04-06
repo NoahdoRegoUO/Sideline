@@ -82,6 +82,9 @@ for game in game_list:
 print(game_footage)
 
 final_footage = concatenate_videoclips(game_footage)
+final_footage = editing_service.add_background_music(
+    final_footage, "trap-loop-beetpro.mp3"
+)
 final_footage = editing_service.add_intro(final_footage)
 final_footage = editing_service.add_outro(final_footage)
 final_footage.write_videofile(str(path) + "/content/clips/nba-dunks-highlights.mp4")

@@ -58,6 +58,10 @@ if race_results:
 
 if len(f1_clips) > 0:
     video = concatenate_videoclips(f1_clips, method="compose")
+    audioclip = AudioFileClip(
+        str(path) + "/content/audio/warzone_anno_domini_beats.mp3"
+    ).subclip(0, video.duration)
+    video = video.set_audio(audioclip)
     video.write_videofile(str(path) + "/content/clips/f1_results.mp4")
 
 ### F1 RESULT TEST ###
