@@ -37,4 +37,4 @@ class Game:
             self.footage = concatenate_videoclips(highlight_clips)
 
     def add_video_effects(self):
-        self.footage = addNBAScoreline(self.scoreline, self.footage)
+        self.footage = addScorelineHeader(self.scoreline, self.footage)

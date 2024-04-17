@@ -10,7 +10,7 @@ from PIL import Image
 path = Path(os.path.dirname(__file__))
 
 
-def addNBAScoreline(title_text, clip):
+def addScorelineHeader(title_text, clip):
     # Generate a text clip at top left
     txt_clip = (
         TextClip(
@@ -136,6 +136,97 @@ def addF1DriverResult(position, name, team, time, diff, driver):
     # Overlay the text clip on the first video clip
     video = CompositeVideoClip(
         [background, position_txt, name_txt, team_txt, time_txt, diff_txt, driver_img]
+    )
+
+    return video
+
+
+def add_final_score_graphic(highlights=None):
+    background_graphic_clip = (
+        ImageClip(str(path.parent) + "/content/images/sideline_score_template.png")
+        .set_duration(1)
+        .set_position("center")
+        .set_fps(60)
+    )
+    background_graphic_clip = background_graphic_clip.resize(width=1280, height=720)
+
+    # Add logo to top left
+    logo_clip = (
+        ImageClip(str(path.parent) + "/content/logos/leagues/nba.png")
+        .set_duration(background_graphic_clip.duration)
+        .set_position((0.035, 0.03), relative=True)
+    )
+
+    logo_clip = logo_clip.resize(0.2)
+
+    # Add nba image
+    content_image = (
+        ImageClip(str(path.parent) + "/content/images/tmp_nba_photo.jpg")
+        .set_duration(background_graphic_clip.duration)
+        .set_position((0.444, 0.173), relative=True)
+    )
+
+    content_image = content_image.resize(0.36)
+
+    # Add team 1 logo
+    team_1_logo_clip = (
+        ImageClip(str(path.parent) + "/content/logos/nba/TOR.png")
+        .set_duration(background_graphic_clip.duration)
+        .set_position((0.215, 0.09), relative=True)
+    )
+
+    team_1_logo_clip = team_1_logo_clip.resize(0.25)
+
+    # Add team 1 score
+    score_1_txt = (
+        TextClip(
+            "122",
+            font="Avenir-Next-Condensed-Heavy",
+            fontsize=100,
+            color="white",
+            stroke_color="white",
+            stroke_width=4,
+            kerning=-1,
+        )
+        .set_position((0.2, 0.26), relative=True)
+        .set_duration(background_graphic_clip.duration)
+    )
+
+    # Add team 2 logo
+    team_2_logo_clip = (
+        ImageClip(str(path.parent) + "/content/logos/nba/WAS.png")
+        .set_duration(background_graphic_clip.duration)
+        .set_position((0.215, 0.70), relative=True)
+    )
+
+    team_2_logo_clip = team_2_logo_clip.resize(0.25)
+
+    # Add team 2 score
+    score_2_txt = (
+        TextClip(
+            "116",
+            font="Avenir-Next-Condensed-Heavy",
+            fontsize=100,
+            color="white",
+            stroke_color="white",
+            stroke_width=4,
+            kerning=-1,
+        )
+        .set_position((0.2, 0.52), relative=True)
+        .set_duration(background_graphic_clip.duration)
+    )
+
+    # Concatenate clips
+    video = CompositeVideoClip(
+        [
+            background_graphic_clip,
+            logo_clip,
+            content_image,
+            team_1_logo_clip,
+            score_1_txt,
+            team_2_logo_clip,
+            score_2_txt,
+        ]
     )
 
     return video
