@@ -4,8 +4,8 @@ import json
 import urllib.request
 
 from services import editing_service, nba_stats_service, nba_clip_service
-from services.endpoints import *
-from services.constants import *
+from endpoints import *
+from constants import *
 from classes.game import Game
 from classes.highlight import Highlight
 from pathlib import Path
@@ -82,6 +82,9 @@ for game in game_list:
 print(game_footage)
 
 final_footage = concatenate_videoclips(game_footage)
+final_footage = editing_service.add_background_music(
+    final_footage, "trap-loop-beetpro.mp3"
+)
 final_footage = editing_service.add_intro(final_footage)
 final_footage = editing_service.add_outro(final_footage)
 final_footage.write_videofile(str(path) + "/content/clips/nba-dunks-highlights.mp4")
