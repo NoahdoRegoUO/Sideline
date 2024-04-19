@@ -168,6 +168,21 @@ def add_final_score_graphic(highlights=None):
 
     content_image = content_image.resize(0.36)
 
+    # Add team 1 text clip
+    team_1_txt_clip = (
+        TextClip(
+            "Toronto Raptors".upper(),
+            font="Avenir-Next-Condensed-Heavy",
+            fontsize=24,
+            color="white",
+            method="caption",
+            align="center",
+            size=(300, 20),
+        )
+        .set_position((0.148, 0.05), relative=True)
+        .set_duration(background_graphic_clip.duration)
+    )
+
     # Add team 1 logo
     team_1_logo_clip = (
         ImageClip(str(path.parent) + "/content/logos/nba/TOR.png")
@@ -189,6 +204,21 @@ def add_final_score_graphic(highlights=None):
             kerning=-1,
         )
         .set_position((0.2, 0.26), relative=True)
+        .set_duration(background_graphic_clip.duration)
+    )
+
+    # Add team 2 text clip
+    team_2_txt_clip = (
+        TextClip(
+            "Washington Wizards".upper(),
+            font="Avenir-Next-Condensed-Heavy",
+            fontsize=20,
+            color="white",
+            method="caption",
+            align="center",
+            size=(300, 20),
+        )
+        .set_position((0.148, 0.89), relative=True)
         .set_duration(background_graphic_clip.duration)
     )
 
@@ -222,8 +252,10 @@ def add_final_score_graphic(highlights=None):
             background_graphic_clip,
             logo_clip,
             content_image,
+            team_1_txt_clip,
             team_1_logo_clip,
             score_1_txt,
+            team_2_txt_clip,
             team_2_logo_clip,
             score_2_txt,
         ]
