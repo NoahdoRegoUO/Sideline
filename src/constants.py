@@ -191,7 +191,9 @@ premier_league_teams = [
 
 # GLOBAL VARIABLES
 
-highlight_keywords = ["dunk", "Dunk", "dunk,"]
+dunk_keywords = ["dunk", "Dunk", "dunk,"]
+highlight_keywords = ["dunk", "Dunk", "dunk,", "3PT", "driving layup", "jump shot"]
+lowlight_keywords = ["misses", "foul", "blocked"]
 
 intro_path = "/content/clips/sideline_intro.mp4"
 outro_path = "/content/images/sideline_outro.png"

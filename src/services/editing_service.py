@@ -141,10 +141,10 @@ def addF1DriverResult(position, name, team, time, diff, driver):
     return video
 
 
-def add_final_score_graphic(highlights=None):
+def add_final_score_graphic(game, league):
     background_graphic_clip = (
         ImageClip(str(path.parent) + "/content/images/sideline_score_template.png")
-        .set_duration(1)
+        .set_duration(3)
         .set_position("center")
         .set_fps(60)
     )
@@ -152,7 +152,7 @@ def add_final_score_graphic(highlights=None):
 
     # Add logo to top left
     logo_clip = (
-        ImageClip(str(path.parent) + "/content/logos/leagues/nba.png")
+        ImageClip(str(path.parent) + "/content/logos/leagues/" + league + ".png")
         .set_duration(background_graphic_clip.duration)
         .set_position((0.035, 0.03), relative=True)
     )
@@ -171,7 +171,7 @@ def add_final_score_graphic(highlights=None):
     # Add team 1 text clip
     team_1_txt_clip = (
         TextClip(
-            "Toronto Raptors".upper(),
+            game.team_stats_1["TEAM_NAME"].upper(),
             font="Avenir-Next-Condensed-Heavy",
             fontsize=24,
             color="white",
@@ -185,7 +185,14 @@ def add_final_score_graphic(highlights=None):
 
     # Add team 1 logo
     team_1_logo_clip = (
-        ImageClip(str(path.parent) + "/content/logos/nba/TOR.png")
+        ImageClip(
+            str(path.parent)
+            + "/content/logos/"
+            + league
+            + "/"
+            + game.team_stats_1["TEAM_ABBREVIATION"]
+            + ".png"
+        )
         .set_duration(background_graphic_clip.duration)
         .set_position((0.215, 0.09), relative=True)
     )
@@ -195,22 +202,25 @@ def add_final_score_graphic(highlights=None):
     # Add team 1 score
     score_1_txt = (
         TextClip(
-            "122",
+            str(game.team_stats_1["PTS"]),
             font="Avenir-Next-Condensed-Heavy",
             fontsize=100,
             color="white",
             stroke_color="white",
             stroke_width=4,
             kerning=-1,
+            method="caption",
+            align="center",
+            size=(300, 200),
         )
-        .set_position((0.2, 0.26), relative=True)
+        .set_position((0.145, 0.22), relative=True)
         .set_duration(background_graphic_clip.duration)
     )
 
     # Add team 2 text clip
     team_2_txt_clip = (
         TextClip(
-            "Washington Wizards".upper(),
+            game.team_stats_2["TEAM_NAME"].upper(),
             font="Avenir-Next-Condensed-Heavy",
             fontsize=20,
             color="white",
@@ -224,7 +234,14 @@ def add_final_score_graphic(highlights=None):
 
     # Add team 2 logo
     team_2_logo_clip = (
-        ImageClip(str(path.parent) + "/content/logos/nba/WAS.png")
+        ImageClip(
+            str(path.parent)
+            + "/content/logos/"
+            + league
+            + "/"
+            + game.team_stats_2["TEAM_ABBREVIATION"]
+            + ".png"
+        )
         .set_duration(background_graphic_clip.duration)
         .set_position((0.215, 0.70), relative=True)
     )
@@ -234,15 +251,18 @@ def add_final_score_graphic(highlights=None):
     # Add team 2 score
     score_2_txt = (
         TextClip(
-            "116",
+            str(game.team_stats_2["PTS"]),
             font="Avenir-Next-Condensed-Heavy",
             fontsize=100,
             color="white",
             stroke_color="white",
             stroke_width=4,
             kerning=-1,
+            method="caption",
+            align="center",
+            size=(300, 200),
         )
-        .set_position((0.2, 0.52), relative=True)
+        .set_position((0.145, 0.48), relative=True)
         .set_duration(background_graphic_clip.duration)
     )
 
@@ -275,7 +295,9 @@ def add_background_music(video, audio_file):
     music = AudioFileClip(str(path.parent) + "/content/audio/" + audio_file)
     audio = afx.audio_loop(music, duration=video.duration)
     audio = audio.fx(afx.volumex, 0.25)
-    new_audioclip = CompositeAudioClip([video.audio, audio])
+    new_audioclip = (
+        CompositeAudioClip([video.audio, audio]) if video.audio is not None else audio
+    )
     video = video.set_audio(new_audioclip)
     return video
 
