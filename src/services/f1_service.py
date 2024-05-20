@@ -26,7 +26,7 @@ def getYesterdaysRace():
                         - yesterday_date
                     ).days
                 )
-                == -5
+                == 1
             ):
                 yesterdays_race = schedule.iloc[index]
     return yesterdays_race

@@ -41,12 +41,15 @@ def getYesterdaysGames():
     )
     games = gamefinder.get_data_frames()[0]
 
+    # print(games)
+
     # Regex for checking teams
-    team_list = "|".join(constants.nba_teams)
+    team_list = "|".join(constants.nba_teams) + "|".join(constants.wnba_teams)
 
     # Pandas supports regex patterns
     nba_games = games[games.TEAM_ABBREVIATION.str.contains(team_list)]
     nba_games.head()
+
     return nba_games
 
 
