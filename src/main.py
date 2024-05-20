@@ -255,7 +255,7 @@ def create_WNBA_highlights():
         team_stats_1 = yesterdays_nba_games.iloc[team]
         team_stats_2 = yesterdays_nba_games.iloc[team + 1]
         game_obj = Game(team_stats_1, team_stats_2)
-        if game_obj.id < 40000000:
+        if game_obj.id > 1020000000:
             print(game_obj)
             game_list.append(game_obj)
             game_IDs.append(game_obj.id)
@@ -264,7 +264,7 @@ def create_WNBA_highlights():
     async def main(game_list):
         for game in game_list:
             game_highlights = []
-            all_clips = await get_nba_clips([game.id])
+            all_clips = await get_wnba_clips([game.id])
             for clip in all_clips:
                 check_hype = [
                     word
@@ -393,6 +393,6 @@ def create_f1_results_video():
 ### VIDEOS TO CREATE ###
 # create_NBA_dunk_compilation()
 # create_NBA_scorelines()
-# create_NBA_highlights()
-create_WNBA_highlights()
+create_NBA_highlights()
+# create_WNBA_highlights()
 # create_f1_results_video()

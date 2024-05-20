@@ -37,6 +37,21 @@ nba_teams = [
     "WAS",
 ]
 
+wnba_teams = [
+    "ATL",
+    "CHI",
+    "CON",
+    "DAL",
+    "IND",
+    "LAS",
+    "LVA",
+    "MIN",
+    "NYL",
+    "PHX",
+    "SEA",
+    "WAS",
+]
+
 nhl_teams = [
     "AFM",
     "ANA",

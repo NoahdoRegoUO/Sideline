@@ -40,7 +40,7 @@ def nba_clip_endpoint(game_IDs):
 
 
 def wnba_clip_endpoint(game_IDs):
-    url = "https://thehighlow.io/api/query?isNba=false&season=2023-24&ordsq=&gameId=0&period=0&gameClock=12:00&eventNum=0"
+    url = "https://thehighlow.io/api/query?isNba=false&season=2024-25&ordsq=&gameId=0&period=0&gameClock=12:00&eventNum=0"
 
     payload = json.dumps(
         {"queryType": "gameId", "gameIds": game_IDs, "videoType": "high"}
