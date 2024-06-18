@@ -47,7 +47,7 @@ wnba_teams = [
     "LVA",
     "MIN",
     "NYL",
-    "PHX",
+    "PHO",
     "SEA",
     "WAS",
 ]

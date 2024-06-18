@@ -88,7 +88,7 @@ def create_NBA_dunk_compilation():
     final_footage = concatenate_videoclips(game_footage)
     final_footage = editing_service.add_outro(final_footage)
     final_footage = editing_service.add_background_music(
-        final_footage, "trap-loop-beetpro.mp3"
+        final_footage, "ceefour/" + get_background_music()
     )
     final_footage = editing_service.add_intro(final_footage)
     final_footage.write_videofile(str(path) + "/content/clips/nba-dunks-highlights.mp4")
@@ -123,7 +123,7 @@ def create_NBA_scorelines():
 
     final_footage = concatenate_videoclips(scorelines)
     final_footage = editing_service.add_background_music(
-        final_footage, "trap-loop-beetpro.mp3"
+        final_footage, "ceefour/" + get_background_music()
     )
     final_footage.write_videofile(str(path) + "/content/clips/nba-scores.mp4")
 
@@ -225,9 +225,11 @@ def create_NBA_highlights():
     print(game_footage)
 
     final_footage = concatenate_videoclips(game_footage)
+    music = get_background_music()
+    final_footage = editing_service.addMusicAttributionHeader(music, final_footage)
     final_footage = editing_service.add_outro(final_footage)
     final_footage = editing_service.add_background_music(
-        final_footage, "trap-loop-beetpro.mp3"
+        final_footage, "ceefour/" + music
     )
     # final_footage = editing_service.add_intro(final_footage)
     final_footage.write_videofile(str(path) + "/content/clips/nba-highlights.mp4")
@@ -324,9 +326,11 @@ def create_WNBA_highlights():
     print(game_footage)
 
     final_footage = concatenate_videoclips(game_footage)
+    music = get_background_music()
+    final_footage = editing_service.addMusicAttributionHeader(music, final_footage)
     final_footage = editing_service.add_outro(final_footage)
     final_footage = editing_service.add_background_music(
-        final_footage, "trap-loop-beetpro.mp3"
+        final_footage, "ceefour/" + music
     )
     # final_footage = editing_service.add_intro(final_footage)
     final_footage.write_videofile(str(path) + "/content/clips/wnba-highlights.mp4")
@@ -382,12 +386,22 @@ def create_f1_results_video():
 
     if len(f1_clips) > 0:
         video = concatenate_videoclips(f1_clips, method="compose")
+        video = editing_service.add_outro(video)
         audioclip = AudioFileClip(
-            str(path) + "/content/audio/warzone_anno_domini_beats.mp3"
+            str(path) + "/content/audio/ceefour" + get_background_music()
         ).subclip(0, video.duration)
         video = video.set_audio(audioclip)
         video = editing_service.add_intro(video)
         video.write_videofile(str(path) + "/content/clips/f1_results.mp4")
+
+
+def get_background_music(index=None):
+    song_names = os.listdir(str(path) + "/content/audio/ceefour")
+
+    if index != None:
+        return song_names[index]
+    else:
+        return song_names[random.randint(0, len(song_names) - 1)]
 
 
 ### VIDEOS TO CREATE ###
@@ -396,3 +410,6 @@ def create_f1_results_video():
 create_NBA_highlights()
 # create_WNBA_highlights()
 # create_f1_results_video()
+
+### FUNCTION TESTING ###
+# print(get_background_music())
