@@ -38,6 +38,37 @@ def addScorelineHeader(title_text, clip):
     return video
 
 
+def addMusicAttributionHeader(song_text, clip):
+    # Generate a text clip at top left
+    txt_clip = (
+        TextClip(
+            "Song: " + song_text[0 : (song_text.rfind("-") - 1)],
+            font="Avenir-Next-Condensed-Heavy",
+            fontsize=28,
+            color="white",
+            method="caption",
+            align="East",
+            size=(1270, 75),
+        )
+        .set_position((0, 0.035), relative=True)
+        .set_duration(clip.duration)
+    )
+
+    # Generate Image clip for text background at top left
+    # img_clip = (
+    #     ImageClip(str(path.parent) + "/content/images/sideline_header.png")
+    #     .set_duration(clip.duration)
+    #     .set_position(("left", "top"))
+    # )
+
+    # img_clip = img_clip.resize(0.5)
+
+    # Overlay the text clip on the first video clip
+    video = CompositeVideoClip([clip, txt_clip])
+
+    return video
+
+
 def addF1DriverResult(position, name, team, time, diff, driver):
     # Generate Image clip for F1 background
     background = (
@@ -294,7 +325,7 @@ def combine_videos(video1_path, video2_path, final_path):
 def add_background_music(video, audio_file):
     music = AudioFileClip(str(path.parent) + "/content/audio/" + audio_file)
     audio = afx.audio_loop(music, duration=video.duration)
-    audio = audio.fx(afx.volumex, 0.25)
+    audio = audio.fx(afx.volumex, 0.65)
     new_audioclip = (
         CompositeAudioClip([video.audio, audio]) if video.audio is not None else audio
     )
@@ -309,9 +340,25 @@ def add_intro(video):
 
 
 def add_outro(video):
-    outro_clip = (
+    outro_img = (
         ImageClip(str(path.parent) + outro_path).set_duration(10).set_position("center")
     )
-    outro_clip = outro_clip.resize(width=1280, height=720)
+    outro_img = outro_img.resize(width=1280, height=720)
+
+    txt_clip = (
+        TextClip(
+            "Background music prod. by ceefour",
+            font="Avenir-Next-Condensed-Heavy",
+            fontsize=28,
+            color="white",
+            method="caption",
+            align="center",
+            size=(1280, 50),
+        )
+        .set_position((0, 0.8), relative=True)
+        .set_duration(outro_img.duration)
+    )
+
+    outro_clip = CompositeVideoClip([outro_img, txt_clip])
     new_video = concatenate_videoclips([video, outro_clip], method="compose")
     return new_video
